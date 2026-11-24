@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="3" failures="0" errors="0" time="0.116053219">
+    <testsuite name="tests/navigation.test.ts" timestamp="2026-11-24T01:53:19.451Z" hostname="d830ab1ac6b2" tests="3" failures="0" errors="0" skipped="0" time="0.116053219">
+        <testcase classname="tests/navigation.test.ts" name="initNavigation &gt; returns false when the markup is absent" time="0.03180968">
+        </testcase>
+        <testcase classname="tests/navigation.test.ts" name="initNavigation &gt; opens and closes on click" time="0.009491544">
+        </testcase>
+        <testcase classname="tests/navigation.test.ts" name="initNavigation &gt; closes on Escape and returns focus to the toggle" time="0.071364936">
+        </testcase>
+    </testsuite>
+</testsuites>
