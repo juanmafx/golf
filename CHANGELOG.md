@@ -35,3 +35,9 @@ First versioned release. The repository had no earlier tags.
 ### Security
 
 - Resolved all 42 Composer advisories reported against the original lock file
+- Password reset links are built from `APP_URL`, and untrusted `Host` headers are rejected outside `local`
+- Confirmed two-factor secrets can no longer be replaced through the `force` parameter
+- Authenticated responses are sent with `Cache-Control: no-store`
+- Security headers apply to all responses, including errors
+- Disabled unused local disk upload and download routes
+- Separated read and write rate-limit counters, and fixed a server error on malformed login input

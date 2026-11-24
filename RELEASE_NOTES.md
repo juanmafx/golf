@@ -16,7 +16,8 @@ This is a breaking release. No production deployment is known, and no data migra
 
 - Install dependencies and build assets as described in the README.
 - Create a new `.env` from `backend/.env.example`.
-- Existing bcrypt hashes remain verifiable only if `HASH_VERIFY=false` is set. They are rehashed on sign-in once that is configured.
+- Set `APP_URL` to the public URL. Outside `local`, requests for other hosts are rejected.
+- Existing bcrypt hashes remain verifiable only if `HASH_VERIFY=false` is set, and are then rehashed on sign-in. With the default setting, signing in against a bcrypt hash returns a server error.
 
 ## Test results
 

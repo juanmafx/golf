@@ -1,6 +1,6 @@
 # Golf
 
-A Laravel 13 web application that provides a hardened account system: registration, sign-in, password reset and TOTP two-factor authentication, with a separate TypeScript frontend build.
+A Laravel 13 web application that provides an account system: registration, sign-in, password reset and TOTP two-factor authentication, with a separate TypeScript frontend build.
 
 > **Project history:** originally created in 2018 as a Laravel 5.4 application, modernized in 2026.
 
@@ -16,7 +16,7 @@ It began as a starting point for a Laravel application. The 2026 version keeps t
 
 - Account registration with a 12 to 128 character password policy
 - Sign-in, sign-out and optional remember-me
-- Password reset by email, with a response that does not reveal whether an account exists
+- Password reset by email, with the same response for known and unknown addresses and links built from `APP_URL`
 - TOTP two-factor authentication with QR enrollment, confirmation and single-use recovery codes
 - Argon2id password hashing, which applies a unique random salt to every password
 - Encrypted two-factor secrets, recovery codes and sessions
@@ -74,7 +74,7 @@ Open <http://localhost:8000>.
 4. Enter the current code to activate it, then store the recovery codes offline.
 5. On later sign-ins, enter a current code or one unused recovery code.
 
-With the default `MAIL_MAILER=log`, password reset emails are written to `backend/storage/logs/laravel.log`.
+With the default `MAIL_MAILER=log`, password reset emails are written to `backend/storage/logs/mail.log`. That file contains working reset links, so use it only for local development.
 
 ## Configuration
 
@@ -83,13 +83,15 @@ Settings live in `backend/.env`. The most relevant ones are:
 | Variable | Default | Notes |
 | --- | --- | --- |
 | `APP_KEY` | empty | Generate with `php artisan key:generate`. Rotating it makes stored 2FA secrets unreadable unless the old key is kept in `APP_PREVIOUS_KEYS`. |
-| `APP_ENV` | `local` | Use `production` when deployed. |
+| `APP_ENV` | `local` | Use `production` when deployed. Outside `local`, requests for any host other than the `APP_URL` host are rejected. |
+| `APP_URL` | `http://localhost:8000` | Must be the public URL. Password reset links and the trusted host are derived from it. |
 | `APP_DEBUG` | `false` | Keep disabled outside local debugging. |
 | `DB_CONNECTION` | `sqlite` | Use `mysql` with the `DB_*` settings for MySQL. |
 | `HASH_DRIVER` | `argon2id` | Password hashing algorithm. |
 | `SESSION_ENCRYPT` | `true` | Encrypts session payloads. |
-| `SESSION_SECURE_COOKIE` | `false` in the example | Set to `true` behind HTTPS. |
+| `SESSION_SECURE_COOKIE` | unset | When unset, cookies are HTTPS-only if `APP_ENV=production`. |
 | `MAIL_MAILER` | `log` | Configure a real transport for production. |
+| `MAIL_LOG_CHANNEL` | `mail` | Log channel used by the `log` mailer. |
 
 ## Database
 
@@ -120,4 +122,4 @@ See [SECURITY.md](SECURITY.md) and [docs/SECURITY_AUDIT.md](docs/SECURITY_AUDIT.
 
 ## Versioning and license
 
-The current version is in [VERSION](VERSION), with changes in [CHANGELOG.md](CHANGELOG.md). The project manifest declares the MIT license. Laravel and other third-party components are credited in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The current version is in [VERSION](VERSION), with changes in [CHANGELOG.md](CHANGELOG.md). `backend/composer.json` declares the MIT license, inherited from the Laravel skeleton, and the repository has no standalone `LICENSE` file. Laravel and other third-party components are credited in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

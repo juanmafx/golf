@@ -31,6 +31,10 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), geolocation=(), microphone=(), payment=()');
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
 
+        if ($request->user() !== null) {
+            $response->headers->set('Cache-Control', 'no-store, private');
+        }
+
         if ($request->isSecure()) {
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }

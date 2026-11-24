@@ -4,10 +4,13 @@ Audit performed in November 2026 during the modernization to version 1.0.0.
 
 ## Method
 
-- `gitleaks` over the working tree and full git history (1 commit): no findings
+- `gitleaks` over the working tree and full git history: no findings
 - `composer audit` on the original and updated lock files
 - `npm audit` on the new frontend lock file
 - Manual review of routes, controllers, views and configuration
+- Adversarial regression tests in `backend/tests/Feature/Security/HardeningTest.php`
+- One manual run of registration, 2FA enrollment, sign-in, recovery, replay and password reset in headless Chromium against a local server
+- Comparison of migrations and `db/schema.sql` on MySQL 8.4: identical columns and indexes
 
 ## Findings and resolution
 
@@ -29,12 +32,30 @@ Audit performed in November 2026 during the modernization to version 1.0.0.
 
 No SQL injection, unsafe `eval` or hardcoded production secret was found in the original application code.
 
+## Defects found in the modernized code and fixed
+
+| Defect | Impact | Resolution |
+| --- | --- | --- |
+| Reset links used the request `Host` header | A forged host could send a victim a link that leaks the reset token | Links are built from `APP_URL`, and other hosts are rejected outside `local` |
+| `force` on the 2FA enable endpoint | Replaced a confirmed secret and could lock the user out | `force` applies only to unconfirmed enrollment |
+| Non-string login identifier | Unauthenticated requests caused a 500 | Handled as a validation error |
+| Recovery codes and secrets were cacheable | Browser storage could retain them | Authenticated responses use `no-store` |
+| Reads and writes shared one rate-limit counter | Normal page views exhausted the write limit | Separate counters |
+| Headers applied only to web routes | 404 and other unrouted responses had no policy | Applied globally |
+| Framework error pages used inline styles | CSP violations on error responses | CSP-compliant error layout |
+| Unused signed storage routes | Unneeded upload and download surface | Disabled |
+| Example file forced insecure cookies | Copying it to production kept cookies usable over HTTP | Setting removed, production defaults to secure cookies |
+| Log mailer output was filtered by `LOG_LEVEL=info` | Local password reset emails were silently lost | Dedicated `mail` log channel |
+
 ## Open items
 
 - Registration necessarily reports when an email is already in use.
 - Email verification is not enabled.
 - Two-factor authentication is optional per account.
 - Trusted proxies must be configured per deployment.
+- Login limits apply per email and IP and per IP, so guessing distributed across many IPs is not capped per account.
+- The framework equalizes reset timing to about 200 ms. Synchronous mail delivery slower than that can reveal whether an account exists, so queue mail in production.
+- TOTP replay rejection depends on a shared persistent cache, which is the default `database` store.
 - The original vulnerable lock file remains in git history and on `master` until this branch is merged.
 
 ## Verification limits

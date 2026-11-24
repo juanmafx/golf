@@ -14,7 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->web(append: [AuthenticateSession::class, SecurityHeaders::class]);
+        $middleware->trustHosts(
+            at: fn () => ['^'.preg_quote((string) parse_url((string) config('app.url'), PHP_URL_HOST)).'$'],
+            subdomains: false,
+        );
+        $middleware->append(SecurityHeaders::class);
+        $middleware->web(append: [AuthenticateSession::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

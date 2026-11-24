@@ -32,7 +32,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, pdo_sqlite, sodium, xml
           coverage: none
-          tools: none
+          tools: composer:v2
       - run: composer validate --strict --no-check-publish
       - run: composer install --no-interaction --no-progress --prefer-dist --no-scripts
       - run: php artisan package:discover --no-ansi

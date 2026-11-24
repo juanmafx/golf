@@ -8,8 +8,10 @@ Golf is a server-rendered Laravel application. The backend owns routing, authent
 Browser
   │  HTML forms, CSRF token, session cookie
   ▼
+Global middleware: TrustHosts, SecurityHeaders
+  │
 Laravel web middleware
-  │  session, CSRF, AuthenticateSession, SecurityHeaders
+  │  session, CSRF, AuthenticateSession
   ├── Fortify routes ──► Actions/Fortify ──► User model
   └── App routes ──────► Controllers ──────► Blade views
                                  │
@@ -22,7 +24,7 @@ Laravel web middleware
 ```text
 backend/
 ├── app/
-│   ├── Actions/Fortify/         Registration, password reset and password rules
+│   ├── Actions/Fortify/         Registration, password reset, password rules and guarded 2FA enrollment
 │   ├── Http/
 │   │   ├── Controllers/         Dashboard and Account/SecuritySettings
 │   │   ├── Middleware/          SecurityHeaders
@@ -31,7 +33,7 @@ backend/
 │   └── Providers/               Fortify views and rate limiters
 ├── config/                      Framework, Fortify, hashing and session settings
 ├── database/                    Migrations, factory and seeder
-├── resources/views/             Layout, auth, account and dashboard templates
+├── resources/views/             Layout, auth, account, dashboard and error templates
 ├── routes/web.php               Application routes
 └── tests/
     ├── Feature/                 Pages, authentication, two-factor, CSRF and headers
@@ -63,5 +65,6 @@ frontend/
 - Run PHP-FPM with OPcache and serve only `backend/public`.
 - Use MySQL 8.4 with a least-privilege application account.
 - Build frontend assets during the release and do not commit them.
-- Set `APP_ENV=production`, `APP_DEBUG=false` and `SESSION_SECURE_COOKIE=true`.
+- Set `APP_ENV=production`, `APP_DEBUG=false` and `APP_URL` to the public URL. Production defaults to HTTPS-only session cookies.
+- Use a real mail transport and queue password reset mail.
 - Provide `APP_KEY` from a secret manager and back it up, since it decrypts 2FA secrets.
