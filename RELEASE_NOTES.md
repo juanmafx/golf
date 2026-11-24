@@ -1,23 +1,15 @@
-# Golf 1.0.0 Release Notes
+# Golf 1.0.1 Release Notes
 
-Version 1.0.0 moves the original 2018 Laravel 5.4 application to a supported stack and adds two-factor authentication. The release has not been tagged or published.
+Version 1.0.1 is a documentation release. It does not change code behaviour.
 
-## Highlights
+## Changes
 
-- Laravel 13 on PHP 8.4 or newer, with a Vite and TypeScript frontend
-- TOTP two-factor sign-in with single-use recovery codes
-- Argon2id password hashing, encrypted sessions and a strict Content Security Policy
-- Separate `backend/` and `frontend/` directories
-- Automated tests and CI
+- The changelog marks 1.0.0 as released on 2026-11-24.
+- The security audit no longer lists the original vulnerable lock file in git history as an open item. On 2026-11-24 the public history was rewritten so that only the 2026 modernization commits remain. Anything that was ever published in the old history should still be treated as compromised.
 
 ## Upgrade notes
 
-This is a breaking release. No production deployment is known, and no data migration from the 2018 schema is provided.
-
-- Install dependencies and build assets as described in the README.
-- Create a new `.env` from `backend/.env.example`.
-- Set `APP_URL` to the public URL. Outside `local`, requests for other hosts are rejected.
-- Existing bcrypt hashes remain verifiable only if `HASH_VERIFY=false` is set, and are then rehashed on sign-in. With the default setting, signing in against a bcrypt hash returns a server error.
+No action is needed when upgrading from 1.0.0. See the 1.0.0 entry in [CHANGELOG.md](CHANGELOG.md) for the breaking changes of the modernization.
 
 ## Test results
 

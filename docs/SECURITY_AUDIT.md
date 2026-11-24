@@ -56,7 +56,10 @@ No SQL injection, unsafe `eval` or hardcoded production secret was found in the 
 - Login limits apply per email and IP and per IP, so guessing distributed across many IPs is not capped per account.
 - The framework equalizes reset timing to about 200 ms. Synchronous mail delivery slower than that can reveal whether an account exists, so queue mail in production.
 - TOTP replay rejection depends on a shared persistent cache, which is the default `database` store.
-- The original vulnerable lock file remains in git history and on `master` until this branch is merged.
+
+## Resolved after the audit
+
+- The original vulnerable lock file was in git history and on `master`. Version 1.0.0 was published to `master` on 2026-11-24, and the same day the public history was rewritten so that only the 2026 modernization commits remain. Pre-2026 commits are no longer in any branch or tag, although GitHub may still serve them by direct commit hash until it purges unreferenced objects. Treat anything that was ever published in that history as compromised.
 
 ## Verification limits
 
