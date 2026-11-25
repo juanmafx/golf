@@ -1,4 +1,4 @@
-# Golf
+# laravel-2fa-accounts
 
 A Laravel 13 web application that provides an account system: registration, sign-in, password reset and TOTP two-factor authentication, with a separate TypeScript frontend build.
 
