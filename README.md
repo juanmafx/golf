@@ -6,7 +6,7 @@ A Laravel 13 web application that provides an account system: registration, sign
 
 ## Purpose
 
-Golf is an authentication foundation. Despite the name, it contains **no golf-specific features** such as courses, scores or players. The original project was the standard Laravel 5.4 authentication scaffold with a project name and a customized dashboard message.
+laravel-2fa-accounts is an authentication foundation. It was previously named `golf`, but it contains **no golf-specific features** such as courses, scores or players. The original project was the standard Laravel 5.4 authentication scaffold with a project name and a customized dashboard message.
 
 ## Why this project exists
 
